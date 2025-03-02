@@ -130,3 +130,6 @@ dist
 .pnp.*
 
 *storybook.log
+
+# Caché de TurboRepo
+.turbo/

@@ -1,13 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { ProductStoreState } from "@store/types";
+import { Invoice, ProductStoreState } from "@store/types";
 import { loadInitialProducts } from "@store/mocks";
+import { v4 as uuidv4 } from "uuid";
 
 export const useProductStore = create<ProductStoreState>()(
   persist(
     (set, get) => ({
       products: loadInitialProducts(),
       cart: [],
+      invoices: [],
 
       initializeProducts: (initialProducts) => {
         set({ products: initialProducts });
@@ -60,6 +62,46 @@ export const useProductStore = create<ProductStoreState>()(
           return total + itemTotal;
         }, 0);
       },
+      generateInvoice: (shippingInfo) => {
+        const cart = get().cart;
+
+        const subtotal = cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+        const tax = cart.reduce(
+          (total, item) => total + item.price * item.quantity * item.tax,
+          0
+        );
+        const total = subtotal + tax;
+
+        const invoice: Invoice = {
+          id: uuidv4(),
+          date: new Date().toISOString(),
+          items: cart,
+          subtotal,
+          tax,
+          total,
+          shippingInfo,
+        };
+
+        set((state) => ({
+          invoices: [...state.invoices, invoice],
+
+          products: state.products.map((product) => {
+            const cartItem = cart.find((item) => item.id === product.id);
+            return cartItem
+              ? {
+                  ...product,
+                  stock: Math.max(0, product.stock - cartItem.quantity),
+                }
+              : product;
+          }),
+          cart: [],
+        }));
+
+        return invoice;
+      },
     }),
     {
       name: "product-storage",
@@ -90,5 +132,15 @@ export const useCart = () => {
     updateCartItemQuantity,
     clearCart,
     calculateCartTotal,
+  };
+};
+
+export const useInvoices = () => {
+  const invoices = useProductStore((state) => state.invoices);
+  const generateInvoice = useProductStore((state) => state.generateInvoice);
+
+  return {
+    invoices,
+    generateInvoice,
   };
 };

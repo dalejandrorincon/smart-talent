@@ -30,7 +30,8 @@
       "@components": ["./src/components"],
       "@hooks": ["./src/hooks"],
       "@utils": ["./src/utils"],
-      "@types": ["./src/types"]
+      "@types": ["./src/types"],
+      "@router": ["./src/router"]
     }
   },
   "include": ["src"]

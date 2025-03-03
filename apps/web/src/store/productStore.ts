@@ -108,6 +108,7 @@ export const useProductStore = create<ProductStoreState>()(
       partialize: (state) => ({
         cart: state.cart,
         products: state.products,
+        invoices: state.invoices,
       }),
     }
   )

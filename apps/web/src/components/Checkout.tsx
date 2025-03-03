@@ -13,19 +13,19 @@ import {
 import { ShippingForm } from "./ShippingForm";
 import { useInvoices } from "@store/productStore";
 import { useCart } from "@store/productStore";
-import { ShippingFormData } from "@types";
+import { CartItem, ShippingFormData } from "@types";
 
 export const Checkout: React.FC = () => {
   const { cart } = useCart();
   const { generateInvoice } = useInvoices();
-  const [invoiceGenerated, setInvoiceGenerated] = useState(false);
+  const [lastCartItems, setLastCartItems] = useState<CartItem[]>([]);
 
   const handleShippingSubmit = (shippingData: ShippingFormData) => {
+    setLastCartItems(cart);
     generateInvoice(shippingData);
-    setInvoiceGenerated(true);
   };
 
-  if (cart.length === 0) {
+  if (cart.length === 0 && lastCartItems.length === 0) {
     return (
       <Container maxWidth="sm">
         <Typography variant="h6" align="center" sx={{ mt: 4 }}>
@@ -37,7 +37,7 @@ export const Checkout: React.FC = () => {
 
   return (
     <Container maxWidth="md">
-      {!invoiceGenerated ? (
+      {lastCartItems.length === 0 ? (
         <>
           <Typography variant="h4" gutterBottom>
             Detalles del Carrito
@@ -71,6 +71,22 @@ export const Checkout: React.FC = () => {
         <Box sx={{ textAlign: "center", mt: 4 }}>
           <Typography variant="h4" gutterBottom>
             ¡Compra Realizada!
+          </Typography>
+          <List>
+            {lastCartItems.map((item) => (
+              <ListItem key={item.id}>
+                <ListItemText
+                  primary={item.name}
+                  secondary={`Cantidad: ${item.quantity} - Precio: $${item.price}`}
+                />
+              </ListItem>
+            ))}
+          </List>
+          <Typography variant="h6" align="center" sx={{ mt: 2 }}>
+            Total: $
+            {lastCartItems
+              .reduce((total, item) => total + item.price * item.quantity, 0)
+              .toFixed(2)}
           </Typography>
           <Typography variant="body1">
             Tu factura ha sido generada exitosamente.

@@ -7,6 +7,7 @@ import {
   Button,
   Container,
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
@@ -17,56 +18,28 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-    setError,
-  } = useForm<ShippingFormData>();
+    formState: { errors, isValid },
+  } = useForm<ShippingFormData>({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      country: "",
+      phone: "",
+    },
+  });
 
   const { countries, fetchCountries, isValidCountry } = useCountries();
-
-  const handleFormSubmit = (data: ShippingFormData) => {
-    if (!data.name) {
-      setError("name", {
-        type: "manual",
-        message: "Nombre es requerido",
-      });
-      return;
-    }
-
-    if (!data.email || !/\S+@\S+\.\S+/.test(data.email)) {
-      setError("email", {
-        type: "manual",
-        message: "Email inválido",
-      });
-      return;
-    }
-
-    if (!data.phone || !/^\d{7,15}$/.test(data.phone)) {
-      setError("phone", {
-        type: "manual",
-        message: "Teléfono inválido",
-      });
-      return;
-    }
-
-    if (!isValidCountry(data.country)) {
-      setError("country", {
-        type: "manual",
-        message: "El país seleccionado no está en América",
-      });
-      return;
-    }
-
-    onSubmit(data);
-  };
 
   useEffect(() => {
     fetchCountries();
   }, [fetchCountries]);
+
   return (
     <Container maxWidth="sm">
       <Box
         component="form"
-        onSubmit={handleSubmit(handleFormSubmit)}
+        onSubmit={handleSubmit(onSubmit)}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -78,6 +51,7 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
           name="name"
           control={control}
           defaultValue=""
+          rules={{ required: "Nombre es requerido" }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -93,6 +67,13 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
           name="email"
           control={control}
           defaultValue=""
+          rules={{
+            required: "Email es requerido",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Email inválido",
+            },
+          }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -109,6 +90,13 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
           name="phone"
           control={control}
           defaultValue=""
+          rules={{
+            required: "Teléfono es requerido",
+            pattern: {
+              value: /^\d{7,15}$/,
+              message: "Teléfono inválido",
+            },
+          }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -124,6 +112,12 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
           name="country"
           control={control}
           defaultValue=""
+          rules={{
+            required: "Debe seleccionar un país",
+            validate: (value) =>
+              isValidCountry(value) ||
+              "El país seleccionado no está en América",
+          }}
           render={({ field }) => (
             <FormControl variant="outlined" error={!!errors.country}>
               <InputLabel>País</InputLabel>
@@ -137,10 +131,19 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
                   </MenuItem>
                 ))}
               </Select>
+              {errors.country && (
+                <FormHelperText>{errors.country.message}</FormHelperText>
+              )}
             </FormControl>
           )}
         />
-        <Button type="submit" variant="contained" color="primary" size="large">
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          size="large"
+          disabled={!isValid}
+        >
           Confirmar Envío
         </Button>
       </Box>

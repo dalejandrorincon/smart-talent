@@ -1,2 +1,2 @@
-export * from "@store/types/product";
-export * from "@store/types/invoice";
+export * from "./product";
+export * from "./invoice";

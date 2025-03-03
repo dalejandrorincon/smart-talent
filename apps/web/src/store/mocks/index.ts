@@ -1,1 +1,1 @@
-export * from "@store/mocks/products";
+export * from "./products";

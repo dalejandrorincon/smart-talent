@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Invoice, ProductStoreState } from "@store/types";
+import { Invoice, ProductStoreState } from "@types";
 import { loadInitialProducts } from "@store/mocks";
 import { v4 as uuidv4 } from "uuid";
 

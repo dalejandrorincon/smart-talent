@@ -1,4 +1,4 @@
-import { Product, ProductCategory } from "@store/types/";
+import { Product, ProductCategory } from "@types";
 
 export const PRODUCT_MOCKS: Product[] = [
   {

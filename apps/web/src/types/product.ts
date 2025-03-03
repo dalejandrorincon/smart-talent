@@ -1,4 +1,4 @@
-import { ShippingInfo, Invoice } from "@store/types";
+import { ShippingFormData, Invoice } from "@types";
 export enum ProductCategory {
   FRESH_FRUITS = "Frutas Frescas",
   CITRUS = "Cítricos",
@@ -29,5 +29,5 @@ export interface ProductStoreState {
   clearCart: () => void;
   decrementProductStock: (productId: number, quantity: number) => void;
   calculateCartTotal: () => number;
-  generateInvoice?: (shippingInfo: ShippingInfo) => Invoice;
+  generateInvoice: (shippingInfo: ShippingFormData) => Invoice;
 }

@@ -9,14 +9,17 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  IconButton,
 } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 import { ShippingForm } from "./ShippingForm";
 import { useInvoices } from "@store/productStore";
 import { useCart } from "@store/productStore";
 import { CartItem, ShippingFormData } from "@types";
 
 export const Checkout: React.FC = () => {
-  const { cart } = useCart();
+  const { cart, addToCart, removeFromCart } = useCart();
   const { generateInvoice } = useInvoices();
   const [lastCartItems, setLastCartItems] = useState<CartItem[]>([]);
 
@@ -45,7 +48,31 @@ export const Checkout: React.FC = () => {
           <Paper elevation={3} sx={{ p: 2, mb: 2 }}>
             <List>
               {cart.map((item) => (
-                <ListItem key={item.id}>
+                <ListItem
+                  key={item.id}
+                  secondaryAction={
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <IconButton
+                        edge="end"
+                        aria-label="remove"
+                        onClick={() => removeFromCart(item.id)}
+                        size="small"
+                      >
+                        <RemoveIcon />
+                      </IconButton>
+                      <Typography sx={{ mx: 1 }}>{item.quantity}</Typography>
+                      <IconButton
+                        edge="end"
+                        aria-label="add"
+                        onClick={() => addToCart(item)}
+                        disabled={item.quantity >= item.stock}
+                        size="small"
+                      >
+                        <AddIcon />
+                      </IconButton>
+                    </Box>
+                  }
+                >
                   <ListItemText
                     primary={item.name}
                     secondary={`Cantidad: ${item.quantity} - Precio: $${item.price}`}

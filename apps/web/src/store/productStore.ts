@@ -33,9 +33,25 @@ export const useProductStore = create<ProductStoreState>()(
         }
       },
       removeFromCart: (productId) => {
-        set((state) => ({
-          cart: state.cart.filter((item) => item.id !== productId),
-        }));
+        set((state) => {
+          const cartItem = state.cart.find((item) => item.id === productId);
+
+          if (!cartItem) return { cart: state.cart };
+
+          if (cartItem.quantity > 1) {
+            return {
+              cart: state.cart.map((item) =>
+                item.id === productId
+                  ? { ...item, quantity: item.quantity - 1 }
+                  : item
+              ),
+            };
+          } else {
+            return {
+              cart: state.cart.filter((item) => item.id !== productId),
+            };
+          }
+        });
       },
       updateCartItemQuantity: (productId, quantity) => {
         set((state) => ({

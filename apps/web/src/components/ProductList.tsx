@@ -41,7 +41,7 @@ export const ProductList: React.FC = () => {
                   alt={product.name}
                 />
                 <CardContent>
-                  <Typography variant="h5" component="div">
+                  <Typography variant="h5" component="h3">
                     {product.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

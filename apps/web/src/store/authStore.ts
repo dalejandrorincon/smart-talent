@@ -39,3 +39,19 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
+
+export const useAuth = () => {
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const login = useAuthStore((state) => state.login);
+  const logout = useAuthStore((state) => state.logout);
+  const checkIsAdmin = useAuthStore((state) => state.checkIsAdmin);
+
+  return {
+    user,
+    isAuthenticated,
+    login,
+    logout,
+    checkIsAdmin,
+  };
+};

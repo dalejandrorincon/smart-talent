@@ -1,5 +1,10 @@
 import React from "react";
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import {
+  CssBaseline,
+  GlobalStyles,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import { AppRouter } from "@router";
 
 const theme = createTheme({
@@ -21,6 +26,7 @@ const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <GlobalStyles styles={{ body: { backgroundColor: "#e9f0f3" } }} />
       <AppRouter />
     </ThemeProvider>
   );

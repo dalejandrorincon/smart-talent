@@ -1,53 +1,156 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
   Typography,
+  Box,
   Button,
-  Container,
   IconButton,
   Badge,
-  Box,
+  Menu,
+  MenuItem,
+  Divider,
 } from "@mui/material";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import {
+  ShoppingCart as CartIcon,
+  KeyboardArrowDown,
+} from "@mui/icons-material";
+import { useState } from "react";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "@store/authStore";
 import { useCart } from "@store/productStore";
 
-const navLinks = [
-  { label: "Inicio", path: "/" },
-  { label: "Productos", path: "/products" },
-];
-
-export const Layout: React.FC = () => {
+export const Layout = () => {
+  const navigate = useNavigate();
+  const { user, isAuthenticated, logout } = useAuth();
   const { cart } = useCart();
+  const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleClose();
+    navigate("/");
+  };
 
   return (
-    <Box display="flex" flexDirection="column" minHeight="100vh">
-      <AppBar position="static" sx={{ backgroundColor: "#03356b" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+      <AppBar position="static" sx={{ bgcolor: "#03356b" }}>
         <Toolbar>
           <Typography
+            component="h1"
             variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, fontFamily: "Poppins, sans-serif" }}
+            sx={{
+              flexGrow: 1,
+              textDecoration: "none",
+              color: "inherit",
+              fontWeight: "bold",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
           >
-            E-commerce
+            EcoFruit Store
           </Typography>
-          {navLinks.map(({ label, path }) => (
-            <Button key={path} color="inherit" component={Link} to={path}>
-              {label}
-            </Button>
-          ))}
-          <IconButton color="inherit" component={Link} to="/checkout">
-            <Badge badgeContent={cart.length} color="info">
-              <ShoppingCartIcon />
-            </Badge>
-          </IconButton>
+
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+              flexWrap: "wrap",
+              maxWidth: "100%",
+              overflowX: "hidden",
+            }}
+          >
+            {isAuthenticated ? (
+              <>
+                <Button
+                  color="inherit"
+                  onClick={handleMenu}
+                  endIcon={<KeyboardArrowDown />}
+                  sx={{
+                    textTransform: "none",
+                  }}
+                >
+                  {user?.email || "Usuario"}
+                </Button>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                >
+                  <MenuItem disabled>
+                    <Typography variant="body2" color="text.secondary">
+                      {user?.name}
+                    </Typography>
+                  </MenuItem>
+                  <Divider />
+                  <MenuItem onClick={handleLogout}>Cerrar Sesión</MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/"
+                  sx={{ display: { sm: "inline-flex" } }}
+                >
+                  Inicio
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/products"
+                  sx={{ display: { xs: "none", sm: "inline-flex" } }}
+                >
+                  Productos
+                </Button>
+                <Button
+                  color="inherit"
+                  component={Link}
+                  to="/login"
+                  sx={{ display: { xs: "none", sm: "inline-flex" } }}
+                >
+                  Iniciar Sesión
+                </Button>
+                <IconButton
+                  color="inherit"
+                  component={Link}
+                  to="/checkout"
+                  sx={{ mr: 2 }}
+                >
+                  <Badge badgeContent={cartItemCount} color="error">
+                    <CartIcon />
+                  </Badge>
+                </IconButton>
+              </>
+            )}
+          </Box>
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+      <Box component="main" sx={{ flexGrow: 1, my: 4 }}>
         <Outlet />
-      </Container>
+      </Box>
 
       <Box
         component="footer"

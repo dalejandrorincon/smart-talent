@@ -120,8 +120,13 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
           }}
           render={({ field }) => (
             <FormControl variant="outlined" error={!!errors.country}>
-              <InputLabel>País</InputLabel>
-              <Select {...field} label="País">
+              <InputLabel id="country-label">País</InputLabel>
+              <Select
+                {...field}
+                label="País"
+                labelId="country-label"
+                id="country-select"
+              >
                 <MenuItem value="">
                   <em>Selecciona un país</em>
                 </MenuItem>

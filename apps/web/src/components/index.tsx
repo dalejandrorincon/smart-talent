@@ -9,3 +9,4 @@ export {
   InvoiceSummary,
   InvoicesList,
 } from "./Admin";
+export { ProductCard } from "./ProductCard";

@@ -16,6 +16,12 @@ Este proyecto es una aplicación de e-commerce desarrollada como parte de la Pru
 - Lefthook para git hooks
 - ESLint y TypeScript para calidad de código
 
+## Despliegue
+
+La aplicación está desplegada en AWS Amplify y se puede acceder en:
+
+- Live Demo: https://main.d20vxnl6qphxcz.amplifyapp.com/
+
 ## 📂 Estructura del proyecto
 
 El código está organizado como un monorepo con Turborepo para manejar dependencias y compartir configuración entre paquetes. La estructura es la siguiente:

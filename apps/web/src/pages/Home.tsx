@@ -2,13 +2,13 @@ import React from "react";
 import {
   Typography,
   Box,
-  Button,
   Grid,
   Card,
   CardMedia,
   CardContent,
   Container,
 } from "@mui/material";
+import { Button } from "ui-library";
 import { Link } from "react-router-dom";
 import { ProductCategory } from "@types";
 
@@ -58,13 +58,7 @@ const Home: React.FC = () => {
       </Container>
 
       <Box sx={{ mt: 4 }}>
-        <Button
-          variant="contained"
-          color="primary"
-          component={Link}
-          to="/products"
-          size="large"
-        >
+        <Button variant="primary" component={Link} to="/products" size="large">
           Ver Productos
         </Button>
       </Box>

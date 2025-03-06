@@ -1,4 +1,4 @@
-import { Box, Typography, Paper, Grid, Button } from "@mui/material";
+import { Box, Typography, Paper, Grid } from "@mui/material";
 import PrintIcon from "@mui/icons-material/Print";
 import {
   InvoiceCustomerInfo,
@@ -7,6 +7,7 @@ import {
 } from "@components";
 
 import type { Invoice } from "@types";
+import { Button } from "ui-library";
 
 interface InvoiceDetailsProps {
   invoice: Invoice;
@@ -30,16 +31,11 @@ export const InvoiceDetails = ({ invoice }: InvoiceDetailsProps) => {
           </Typography>
         </Box>
         <Button
-          variant="outlined"
+          variant="text"
           startIcon={<PrintIcon />}
           onClick={() => window.print()}
           sx={{
-            borderColor: "#03356b",
             color: "#03356b",
-            "&:hover": {
-              borderColor: "#c28e40",
-              bgcolor: "rgba(213, 160, 80, 0.04)",
-            },
           }}
         >
           Imprimir

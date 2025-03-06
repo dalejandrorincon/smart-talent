@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import {
   Alert,
   Box,
-  Button,
   Container,
   Paper,
   TextField,
@@ -10,6 +9,7 @@ import {
 } from "@mui/material";
 import { useAuth } from "@store/authStore";
 import { Controller, useForm } from "react-hook-form";
+import { Button } from "ui-library";
 
 interface LoginFormValues {
   email: string;
@@ -129,14 +129,7 @@ const Login = () => {
             )}
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            size="large"
-            disabled={isSubmitting}
-          >
+          <Button type="submit" fullWidth size="large" disabled={isSubmitting}>
             {isSubmitting ? "Cargando..." : "Ingresar"}
           </Button>
         </Box>

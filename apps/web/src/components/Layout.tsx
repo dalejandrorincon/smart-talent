@@ -3,7 +3,6 @@ import {
   Toolbar,
   Typography,
   Box,
-  Button,
   IconButton,
   Badge,
   Menu,
@@ -18,6 +17,7 @@ import { useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@store/authStore";
 import { useCart } from "@store/productStore";
+import { Button } from "ui-library";
 
 export const Layout = () => {
   const navigate = useNavigate();
@@ -75,11 +75,12 @@ export const Layout = () => {
             {isAuthenticated ? (
               <>
                 <Button
-                  color="inherit"
+                  variant="text"
                   onClick={handleMenu}
                   endIcon={<KeyboardArrowDown />}
                   sx={{
                     textTransform: "none",
+                    color: "white",
                   }}
                 >
                   {user?.email || "Usuario"}
@@ -109,26 +110,31 @@ export const Layout = () => {
             ) : (
               <>
                 <Button
-                  color="inherit"
+                  variant="text"
                   component={Link}
                   to="/"
-                  sx={{ display: { sm: "inline-flex" } }}
+                  sx={{ display: { sm: "inline-flex" }, color: "white" }}
                 >
                   Inicio
                 </Button>
                 <Button
-                  color="inherit"
+                  variant="text"
                   component={Link}
                   to="/products"
-                  sx={{ display: { xs: "none", sm: "inline-flex" } }}
+                  sx={{
+                    display: { xs: "none", sm: "inline-flex", color: "white" },
+                  }}
                 >
                   Productos
                 </Button>
                 <Button
-                  color="inherit"
+                  variant="text"
                   component={Link}
                   to="/login"
-                  sx={{ display: { xs: "none", sm: "inline-flex" } }}
+                  sx={{
+                    display: { xs: "none", sm: "inline-flex" },
+                    color: "white",
+                  }}
                 >
                   Iniciar Sesión
                 </Button>

@@ -15,8 +15,10 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "declaration": true,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "declarationMap": true,
+    "emitDeclarationOnly": false
   },
-  "include": ["src"],
+  "include": ["src", "stories/Button.stories.tsx"],
   "exclude": ["node_modules", "dist"]
 }

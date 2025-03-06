@@ -5,7 +5,6 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  Button,
   CardActions,
   Box,
   IconButton,
@@ -14,6 +13,7 @@ import { useProductStore } from "@store/productStore";
 import { useCart } from "@store/productStore";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import { Button } from "ui-library";
 
 export const ProductList: React.FC = () => {
   const { products } = useProductStore();
@@ -80,8 +80,7 @@ export const ProductList: React.FC = () => {
                       )}
                       {product.stock === 0 || quantityInCart === 0 ? (
                         <Button
-                          size="medium"
-                          color="primary"
+                          variant="text"
                           disabled={
                             product.stock === 0 ||
                             quantityInCart >= product.stock

@@ -4,7 +4,6 @@ import { Controller, useForm } from "react-hook-form";
 import { useCountries } from "@hooks";
 import {
   Box,
-  Button,
   Container,
   FormControl,
   FormHelperText,
@@ -13,6 +12,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { Button } from "ui-library";
 
 export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
   const {
@@ -137,13 +137,7 @@ export const ShippingForm: React.FC<ShippingFormProps> = ({ onSubmit }) => {
             </FormControl>
           )}
         />
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          size="large"
-          disabled={!isValid}
-        >
+        <Button type="submit" size="large" disabled={!isValid}>
           Confirmar Envío
         </Button>
       </Box>

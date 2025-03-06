@@ -1,3 +1,2 @@
-// Aquí exportaremos todos nuestros componentes
-// Por ahora está vacío, pero iremos añadiendo componentes
-export {};
+export { default as Button } from "./Button/Button";
+export type { ButtonProps } from "./Button/Button";
